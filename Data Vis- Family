@@ -1,0 +1,41 @@
+Family
+
+Background and insights
+
+In this section the features Parch and Sibsp were explored. I was curious to see if traveling with family or alone effected survival and how. 
+I began by combing Parch and Sibsp into one column that I named Family. 
+Groups that were greater than 1 were catergorized as Family, less were catergorized as alone.
+
+
+    1. The first graph displays the average amount of families vs solo passengers. 
+      It shows that between the two there were more individuals then there were familes.
+    2. The second graph displays the average survival of families vs solo passengers. 
+      It shows that those tho traveled in families or groups were more likely to survive. 
+      Passengers that traveled alone had about a 30% survival rate compared to those who traveled in groups/families just above 50% survival rate.
+
+
+''''''
+train_df['Family'] =  train_df["Parch"] + train_df["SibSp"]
+train_df['Family'].loc[train_df['Family'] > 0] = 1
+train_df['Family'].loc[train_df['Family'] == 0] = 0
+
+test_df['Family'] =  test_df["Parch"] + test_df["SibSp"]
+test_df['Family'].loc[test_df['Family'] > 0] = 1
+test_df['Family'].loc[test_df['Family'] == 0] = 0
+
+# drop Parch & SibSp
+train_df = train_df.drop(['SibSp','Parch'], axis=1)
+test_df = test_df.drop(['SibSp','Parch'], axis=1)
+
+# plot
+fig, (axis1,axis2) = plt.subplots(1,2,sharex=True,figsize=(10,5))
+
+# sns.factorplot('Family',data=titanic_df,kind='count',ax=axis1)
+sns.countplot(x='Family', data=train_df, order=[1,0], ax=axis1)
+
+# average of survived for those who had/didn't have any family member
+family_perc = train_df[["Family", "Survived"]].groupby(['Family'],as_index=False).mean()
+sns.barplot(x='Family', y='Survived', data=family_perc, order=[1,0], ax=axis2)
+
+axis1.set_xticklabels(["With Family","Alone"], rotation=0)
+''''''
