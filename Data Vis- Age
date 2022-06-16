@@ -1,0 +1,50 @@
+Age
+
+Background and Insights
+
+In this section the feature 'Age' was used to observe patterns in survival. While evaluating the data I found that 177 data for age were missing. 
+In order to correct this the data missing data was replaced by randomized ages generated from the mean age and standard deviation. 
+Once this data was replaced I created a few different graphs to display survial rate based on age and sex.
+
+
+    1. The first chart is a distibution overlay of survival and deceased by age. 
+          Based on data we know that the bulk of passengers were between that ages of 15 and 45. This is also were the curve is most prominent.
+    2. The following graph focuses on the probablilty of survival based on the individual ages of passengers recorded on board. 
+          A few of these points, such as 12,13 and 80 years old, are skewed or could be considered outliars as they were the only
+          passangers that age and they survived.
+    3. The final two graphs were my attempt to combine rate of survival, age by gender. 
+          There were more men on the voyage and overall across any age they had a low rate of surviral compared to their counterparts.
+
+
+''''''
+
+
+data = [train_df, test_df]
+for dataset in data:
+    mean = train_df["Age"].mean()
+    std = test_df["Age"].std()
+    is_null = dataset["Age"].isnull().sum()
+    # compute random numbers between the mean, std and is_null
+    rand_age = np.random.randint(mean - std, mean + std, size = is_null)
+    # fill NaN values in Age column with random values generated
+    age_slice = dataset["Age"].copy()
+    age_slice[np.isnan(age_slice)] = rand_age
+    dataset["Age"] = age_slice
+    dataset["Age"] = train_df["Age"].astype(int)
+
+''''''
+
+''''''
+
+# peaks for survived/deceased passengers by their age
+facet = sns.FacetGrid(train_df, hue="Survived",aspect=4)
+facet.map(sns.kdeplot,'Age',shade= True)
+facet.set(xlim=(0, train_df['Age'].max()))
+facet.add_legend()
+
+# average survived passengers by age
+fig, axis1 = plt.subplots(1,1,figsize=(18,4))
+average_age = train_df[["Age", "Survived"]].groupby(['Age'],as_index=False).mean()
+sns.barplot(x='Age', y='Survived', data=average_age)
+
+''''''
