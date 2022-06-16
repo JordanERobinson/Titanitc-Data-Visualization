@@ -1,0 +1,53 @@
+Embarked
+
+Background and insights 
+
+There were three embarking stations (S,C,Q) recorded in this feature. 
+There were two data points missing from this feature, using the most common embarking port(S) these points were replaced.
+A factor plot was used to compare the surviral rate between the three embarking ports. 
+Port C had the highest precentage of surviral of the three. Bargraphs were used to compare various combinations of embarking ports and survival.
+
+
+    1. The first graph displays the amount of people in each catergory. Port S was the most common boarding station with over 600 passangers. 
+            Followed by port C with roughly 150 and port Q which has less than 100 people board.
+    2. The next graph depict the amount of people that survived(1) or passed away(0) per port.
+    3. The final graph displays the likelihood to survive per port. 
+        Individuals that embarked at C port had a 50% chance of survival compared to Q, 
+        which is just shy of 40% and S with a roughly 30% chance of survival.
+
+
+''''''''
+# only in train_df, fill the two missing values with the most occurred value, which is "S".
+train_df["Embarked"] = train_df["Embarked"].fillna("S")
+
+# plot
+sns.factorplot('Embarked','Survived', data=train_df,size=4,aspect=3)
+
+fig, (axis1,axis2,axis3) = plt.subplots(1,3,figsize=(15,5))
+
+# sns.factorplot('Embarked',data=train_df,kind='count',order=['S','C','Q'],ax=axis1)
+# sns.factorplot('Survived',hue="Embarked",data=train_df,kind='count',order=[1,0],ax=axis2)
+sns.countplot(x='Embarked', data=train_df, ax=axis1)
+sns.countplot(x='Survived', hue="Embarked", data=train_df, order=[1,0], ax=axis2)
+
+# group by embarked, and get the mean for survived passengers for each value in Embarked
+embark_perc = train_df[["Embarked", "Survived"]].groupby(['Embarked'],as_index=False).mean()
+sns.barplot(x='Embarked', y='Survived', data=embark_perc,order=['S','C','Q'],ax=axis3)
+
+# Either to consider Embarked column in predictions,
+# and remove "S" dummy variable, 
+# and leave "C" & "Q", since they seem to have a good rate for Survival.
+
+embark_dummies_titanic  = pd.get_dummies(train_df['Embarked'])
+embark_dummies_titanic.drop(['S'], axis=1, inplace=True)
+
+embark_dummies_test  = pd.get_dummies(test_df['Embarked'])
+embark_dummies_test.drop(['S'], axis=1, inplace=True)
+
+train_df = train_df.join(embark_dummies_titanic)
+test_df    = test_df.join(embark_dummies_test)
+
+train_df.drop(['Embarked'], axis=1,inplace=True)
+test_df.drop(['Embarked'], axis=1,inplace=True)
+
+'''''''
