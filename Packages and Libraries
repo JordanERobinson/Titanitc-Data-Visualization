@@ -1,0 +1,17 @@
+# get titanic & test csv files as a DataFrame
+train_df = pd.read_csv('../input/titanic/train.csv')
+test_df = pd.read_csv('../input/titanic/test.csv')
+
+# preview the data
+train_df.head()
+
+# pandas
+import pandas as pd
+from pandas import Series,DataFrame
+
+# numpy, matplotlib, seaborn
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set_style('whitegrid')
+%matplotlib inline
