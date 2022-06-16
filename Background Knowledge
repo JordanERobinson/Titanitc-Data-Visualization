@@ -1,0 +1,13 @@
+Titanic Data Visualization
+Background
+
+The RMS Titanic was a luxury streamship that sank on the 15th of April 1912, off the coast of Newfoundland in the North Atlanic. 
+After a collision with an iceberg while en route to New York City from Southampton, England. 
+There were a recorded 2,240 passengers and crew on board for the voyage and a total of 1504 lost their lives.
+
+This project was initially written as a submission for the "Titanic: Machine Learning from Disaster" Competition. 
+This challenge called for participants to predict whether a passenger on the titanic would survive based on passenger data from the event. 
+The Titanic dataset provided a diverse amount of information about passengers such as socio-economic status, gender, age, survival and more.
+
+This project is in addition to my full walkthrough submission for the "Titanic: Machine Learning Disaster" Compeition. 
+However, this project focuses on data visualization techniques.
